@@ -1,2 +1,7 @@
 /.DS_Store
 .vscode/settings.json
+qualifier/qualifier/filters/__pycache__/
+.vscode/launch.json
+*.pyc
+.DS_Store
+qualifier/.DS_Store

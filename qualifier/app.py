@@ -11,17 +11,17 @@ import fire
 import questionary
 from pathlib import Path
 
-from qualifier.qualifier.utils.fileio import load_csv, save_csv
+from qualifier.utils.fileio import load_csv, save_csv
 
-from qualifier.qualifier.utils.calculators import (
+from qualifier.utils.calculators import (
     calculate_monthly_debt_ratio,
     calculate_loan_to_value_ratio,
 )
 
-from qualifier.qualifier.filters.max_loan_size import filter_max_loan_size
-from qualifier.qualifier.filters.credit_score import filter_credit_score
-from qualifier.qualifier.filters.debt_to_income import filter_debt_to_income
-from qualifier.qualifier.filters.loan_to_value import filter_loan_to_value
+from qualifier.filters.max_loan_size import filter_max_loan_size
+from qualifier.filters.credit_score import filter_credit_score
+from qualifier.filters.debt_to_income import filter_debt_to_income
+from qualifier.filters.loan_to_value import filter_loan_to_value
 
 
 def load_bank_data():
@@ -108,15 +108,16 @@ def save_qualifying_loans(qualifying_loans):
     Args:
         qualifying_loans (list of lists): The qualifying bank loans.
     """
-    # @TODO: Complete the usability dialog for savings the CSV Files.
+    # Check to see if the user wants to save the qualifying loans
     should_save_qualifying_loans = questionary.confirm("Do you want to save the qualifying loans?").ask()
     
-    if should_save_qualifying_loans:
-        csvpath = questionary.text("Enter a file path to save qualifying loans (.csv):").ask()
-        csvpath = Path(csvpath)
-        if not csvpath.exists():
-            sys.exit(f"Oops! Can't find this path: {csvpath}")
+    # If there are qualifying loans and the user wants to save then prompt for a path
+    if len(qualifying_loans) > 0 and should_save_qualifying_loans:
+        csvpath = Path(questionary.text("Enter a file path to save qualifying loans (.csv):").ask())
         save_csv(csvpath, qualifying_loans)
+    else:
+        # Else tell the user there are no qualifying loans
+        print(f"There are {qualifying_loans} qualifying loans. Nothing will be saved.")
 
 
 def run():
