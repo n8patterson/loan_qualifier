@@ -12,6 +12,7 @@ from qualifier.filters.credit_score import filter_credit_score
 from qualifier.filters.debt_to_income import filter_debt_to_income
 from qualifier.filters.loan_to_value import filter_loan_to_value
 from qualifier.filters.max_loan_size import filter_max_loan_size
+from app import find_qualifying_loans
 
 def test_save_csv():
     # Use Path from pathlib to output the test csv to ./data/output/qualifying_loans.csv
@@ -40,7 +41,10 @@ def test_filters():
     # Test vars
     bank_data = load_csv(Path('./qualifier/data/daily_rate_sheet.csv'))
     current_credit_score = 750
+    debt = 1500
+    income = 4000
     loan = 210000
+    home_value = 250000
      
     # Calculated test data
     monthly_debt_ratio = 0.375
